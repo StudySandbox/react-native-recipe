@@ -1,9 +1,14 @@
 import express from "express";
-import dotenv from "dotenv/config";
+
+import { ENV } from "./config/env.js";
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = ENV.PORT;
 
-app.listen(5001, () => {
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ success: true });
+});
+
+app.listen(PORT, () => {
   console.log("Server is runnin on PORT:", PORT);
 });
