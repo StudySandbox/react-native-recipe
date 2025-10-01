@@ -1,4 +1,5 @@
 import express from "express";
+import { and, eq } from "drizzle-orm";
 
 import { ENV } from "./config/env.js";
 
@@ -37,6 +38,26 @@ app.post("/api/favorites", async (req, res) => {
     res.status(201).json(newFavorite);
   } catch (error) {
     console.log("Error adding favorite", error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+app.delete("/api/favorites/:userId/:recipeId", async (req, res) => {
+  try {
+    const { userId, recipeId } = req.params;
+
+    await db
+      .delete(favoritesTable)
+      .where(
+        and(
+          eq(favoritesTable.userId, userId),
+          eq(favoritesTable.recipeId, parseInt(recipeId))
+        )
+      );
+
+    res.status(200).json({ message: "Favorite removed successfully" });
+  } catch (error) {
+    console.log("Error deleting favorite", error);
     res.status(500).json({ error: "Something went wrong" });
   }
 });
