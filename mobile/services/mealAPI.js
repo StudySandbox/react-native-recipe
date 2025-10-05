@@ -40,7 +40,7 @@ export const MealAPI = {
   },
 
   // get multiple random meals
-  getRandomMeal: async (count = 6) => {
+  getRandomMeals: async (count = 6) => {
     try {
       const promises = Array(count)
         .fill()
@@ -104,13 +104,13 @@ export const MealAPI = {
       const measure = meal[`strMeasure${i}`];
       if (ingredient && ingredient.trim()) {
         const measureText =
-          measure && measure.trim() ? `${measure.trim()}` : "";
+          measure && measure.trim() ? `${measure.trim()} ` : "";
         ingredients.push(`${measureText}${ingredient.trim()}`);
       }
     }
 
-    // extract insturctions
-    const insturctions = meal.strInstructions
+    // extract instructions
+    const instructions = meal.strInstructions
       ? meal.strInstructions.split(/\r?\n/).filter((step) => step.trim())
       : [];
 
@@ -126,7 +126,7 @@ export const MealAPI = {
       category: meal.strCategory || "Main Course",
       area: meal.strArea,
       ingredients,
-      insturctions,
+      instructions,
       originalData: meal,
     };
   },
